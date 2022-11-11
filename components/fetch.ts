@@ -7,7 +7,7 @@ type LengthOfString<
 
 type IsStringOfLength<S extends string, Length extends number> = LengthOfString<S> extends Length ? true : false
 
-function stringifyList(a) {
+function stringifyList(a: string[]) {
     let f = "";
     a.map(i => {
         f = f.concat(',', i);
@@ -55,7 +55,7 @@ export default class SpotifyClient {
     clientSecret: string;
     createdDate: Date | null;
     expiredDate: Date | null;
-    accessToken: Date | null;
+    accessToken: null;
     getAlbumById: any;
     getAlbumsById: any;
     getPlaylistById: any;
@@ -99,7 +99,7 @@ export default class SpotifyClient {
         }
     }
 
-    logTokenCreation(token: JSON) {
+    logTokenCreation(token: any) {
         console.log(token);
         this.createdDate = new Date(); // Record when token was created
         this.expiredDate = new Date(this.createdDate.getTime() + 1000 * token.expires_in); // Calculate and record when token will expire
@@ -138,21 +138,6 @@ export default class SpotifyClient {
 
 
 
-    // Below are methods for API Endpoints
-    
-    async getArtist(id) {
-        const authOptions = {
-            method: "GET",
-            headers: {'Authorization': `Bearer ${await this.getToken()}`, 'Content-Type': 'application/json'}
-        }
-
-        const artist = await fetch(`https://api.spotify.com/v1/artists/${id}`, authOptions)
-        .then(response => response.json())
-        .catch(error => {SpotifyAPI.ಠ_ಠ(error.status)});
-
-        return artist;
-    }
-
     async _fetch(endpoint: any, queryParams:{[key: string]: any} | null = null) {
         let token = this.getToken()
             .then(() => {
@@ -171,31 +156,5 @@ export default class SpotifyClient {
         
 
         
-    }
-
-    async getPlaylist(id) {
-        const authOptions = {
-            method: "GET",
-            headers: {'Authorization': `Bearer ${await this.getToken()}`, 'Content-Type': 'application/json'}
-        };
-
-        const playlist = await fetch(`https://api.spotify.com/v1/playlists/${id}/tracks`, authOptions)
-        .then(response => response.json())
-        .catch(error => {SpotifyAPI.ಠ_ಠ(error.status)});
-
-        return playlist;
-    }
-
-    async getPlaylistInfo(id) {
-        const authOptions = {
-            method: "GET",
-            headers: {'Authorization': `Bearer ${await this.getToken()}`, 'Content-Type': 'application/json'}
-        };
-
-        const playlist = await fetch(`https://api.spotify.com/v1/playlists/${id}`, authOptions)
-        .then(response => response.json())
-        .catch(error => {SpotifyAPI.ಠ_ಠ(error.status)});
-
-        return playlist;
     }
 }
