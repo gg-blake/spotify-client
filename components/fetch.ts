@@ -1,12 +1,3 @@
-type LengthOfString<
-  S extends string,
-  Acc extends 0[] = []
-> = S extends `${string}${infer $Rest}`
-  ? LengthOfString<$Rest, [...Acc, 0]>
-  : Acc["length"];
-
-type IsStringOfLength<S extends string, Length extends number> = LengthOfString<S> extends Length ? true : false
-
 function stringifyList(a: string[]) {
     let f = "";
     a.map(i => {
@@ -110,25 +101,31 @@ export default class SpotifyClient {
         /* Specify HTTP request information */
         const authOptions = {
             method: "POST",
+            mode: "cors",
             // The client id and client secret must be converted to base64 before being added to the header for security purposes
             headers: {"Authorization": `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`, 'Content-type': 'application/x-www-form-urlencoded'},
             // The information being requested is only from my own Spotify account, that is why we are requesting "client_credentials"
-            body: 'grant_type=client_credentials',
+            body: [
+                "grant_type=authorization_code",
+                `scope=${encodeURIComponent("user-library-read")}`
+            ].join("&")
             
         }
 
         /* Perform the token request */
         const token = fetch('https://accounts.spotify.com/api/token', authOptions) // Make a POST request to Spotify
-        .then(response => response.json())
+        .then(response => {
+            
+            response.headers.set("Access-Control-Allow-Headers", "scope");
+            response.headers.set("Access-Control-Allow-Origin", "*");
+            console.log(response)
+            return response.json()
+        })
         .then(json => {
             this.logTokenCreation(json);
             return json
         }) // Wait for the raw data to be converted to json data
         .catch(error => console.log(error))
-        .finally(() => {
-            console.warn("Failed to create token")
-            return null
-        })
 
         /* Parsing token data */
         
@@ -136,21 +133,22 @@ export default class SpotifyClient {
         return token
     }
 
-
-
     async _fetch(endpoint: any, queryParams:{[key: string]: any} | null = null) {
         let token = this.getToken()
             .then(() => {
                 const authOptions = {
                     method: "GET",
+                    mode: "cors",
+                    
                     headers: {'Authorization': `Bearer ${this.accessToken}`, 'Content-Type': 'application/json'},
-                    scope: "user-library-read"
+                    
                 }
 
                 console.log(authOptions);
 
                 return fetch(buildUrl(endpoint, queryParams), authOptions);
             })
+            
         
         return await token
         
