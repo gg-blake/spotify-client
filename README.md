@@ -23,6 +23,7 @@ Once the client object is made, you must authorize a user. You can link to spoti
 ### index.js (NextJS Example)
 ```typescript
 import Link from 'next/link'
+import spotify from './spotify-service'
 
 export default function Home() {
   return (
@@ -47,7 +48,7 @@ Within the file of the specified redirect url, either at render or page ready, c
 ```typescript
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import spotify from '../components/spotify-service'
+import spotify from './spotify-service'
 
 export default function Login() {
     const router = useRouter();
@@ -104,3 +105,9 @@ spotify.addToQueue({
     "device_id": "0d1841b0976bae2a3a310dd74c0f3df354899bc8"
 });
 ```
+
+
+
+
+
+## spotify-client supports the entirety of the official Spotify Web API, as of November 2022. Refer to https://developer.spotify.com/documentation/web-api/ for available query and body parameters for individual requests.
