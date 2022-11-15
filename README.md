@@ -13,7 +13,11 @@ const spotify = new SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_SECRET_ID, SPOTIFY_
 
 export default spotify;
 ```
-======
+
+
+
+
+
 Once the client object is made, you must authorize a user. You can link to spotify authorization by accessing ```spotify.authURL```.
 
 ### index.js (NextJS Example)
@@ -30,6 +34,10 @@ export default function Home() {
   )
 }
 ```
+
+
+
+
 
 Clicking the authorization link and authorizing successfully will redirect to the specified url (NOTE: make sure your redirect url exists in your file directory), along with an authorization code query string attached.
 
@@ -55,3 +63,26 @@ export default function Login() {
     )
 }
 ```
+
+And, you're all set! When you want to make a request to spotify, implement the methods within the ```login.js``` file.
+
+
+
+
+
+## Example Usecases
+
+#### Creating and updating a playlist
+```typescript
+spotify.createPlaylist("226mjvs6gbx2tsrvtmuhrybdy", {
+    "name": "Test Playlist 2022",
+    "description": "This is a test playlist",
+    "public": true,
+    "collaborative": false
+});
+
+spotify.getPlaylist("5fWm7Rb5EMeIlna3tNRLwv");
+
+spotify.getPlaylistCoverImage("5fWm7Rb5EMeIlna3tNRLwv");
+```
+
