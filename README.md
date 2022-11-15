@@ -13,7 +13,7 @@ const spotify = new SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_SECRET_ID, SPOTIFY_
 
 export default spotify;
 ```
-
+======
 Once the client object is made, you must authorize a user. You can link to spotify authorization by accessing ```spotify.authURL```.
 
 ### index.js (NextJS Example)
