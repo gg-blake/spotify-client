@@ -64,7 +64,7 @@ export default function Login() {
 }
 ```
 
-And, you're all set! When you want to make a request to spotify, implement the methods within the ```login.js``` file.
+And, you're all set! When you want to make a request to Spotify, implement the methods within the ```login.js``` file.
 
 
 
