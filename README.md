@@ -32,3 +32,26 @@ export default function Home() {
 ```
 
 Clicking the authorization link and authorizing successfully will redirect to the specified url (NOTE: make sure your redirect url exists in your file directory), along with an authorization code query string attached.
+
+Within the file of the specified redirect url, either at render or page ready, call the ```spotify.authorize``` method, passing in the authorization code as its only argument.
+
+### login.js (NextJS Example)
+```typescript
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import spotify from '../components/spotify-service'
+
+export default function Login() {
+    const router = useRouter();
+
+    useEffect(() => {
+        if (router.isReady) {
+            spotify.authorize(router.query.code as string);
+        }
+    }, [router.isReady])
+    
+    return (
+        ...
+    )
+}
+```
