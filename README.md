@@ -81,8 +81,26 @@ spotify.createPlaylist("226mjvs6gbx2tsrvtmuhrybdy", {
     "collaborative": false
 });
 
-spotify.getPlaylist("5fWm7Rb5EMeIlna3tNRLwv");
+const playlist = await spotify.getPlaylist("5fWm7Rb5EMeIlna3tNRLwv");
 
-spotify.getPlaylistCoverImage("5fWm7Rb5EMeIlna3tNRLwv");
+const image = await spotify.getPlaylistCoverImage("5fWm7Rb5EMeIlna3tNRLwv");
 ```
 
+#### Controlling playback and volume
+```typescript
+spotify.skipPlaybackToNext();
+spotify.skipPlaybackToPrevious();
+
+const currentPlayback = await spotify.getPlaybackState({
+    "addtional_types": "epsiode"
+});
+
+const recentTracks = await spotify.getRecentlyPlayed({
+    "after": "1484811043508"
+})
+
+spotify.addToQueue({
+    "uri": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh",
+    "device_id": "0d1841b0976bae2a3a310dd74c0f3df354899bc8"
+})
+```
